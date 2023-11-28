@@ -6,9 +6,13 @@
 #include <string.h>
 #include <time.h>
 
+typedef struct {
+    int *posicoes;
+    int quantidade;
+} ResultadoKMP;
 
 void preProcessamento(char *padrao, int m, int *prefixo);
-int kmpBusca(char *texto, char *padrao);
+ResultadoKMP kmpBusca(char *texto, char *padrao);
 
 #endif
 

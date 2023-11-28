@@ -1,5 +1,3 @@
-// kmp.c
-#include <string.h>
 #include "kmp.h"
 
 void preProcessamento(char *padrao, int m, int *prefixo) {
@@ -22,13 +20,17 @@ void preProcessamento(char *padrao, int m, int *prefixo) {
     }
 }
 
-int kmpBusca(char *texto, char *padrao) {
+ResultadoKMP kmpBusca(char *texto, char *padrao) {
     int n = strlen(texto);
     int m = strlen(padrao);
 
+    ResultadoKMP resultado;
+    resultado.posicoes = NULL;
+    resultado.quantidade = 0;
+
     // Caso padrão ou texto sejam vazios, não há correspondência
     if (n == 0 || m == 0) {
-        return -1;
+        return resultado;
     }
 
     // Criando o array para armazenar os valores de prefixo
@@ -45,8 +47,13 @@ int kmpBusca(char *texto, char *padrao) {
         }
 
         if (j == m) {
-            // Padrão encontrado, retorna a posição inicial no texto
-            return i - j;
+            // Padrão encontrado, armazena a posição inicial
+            resultado.quantidade++;
+            resultado.posicoes = (int *)realloc(resultado.posicoes, resultado.quantidade * sizeof(int));
+            resultado.posicoes[resultado.quantidade - 1] = i - j;
+
+            // Continue a busca para encontrar todas as ocorrências
+            j = prefixo[j - 1];
         } else if (i < n && padrao[j] != texto[i]) {
             if (j != 0) {
                 j = prefixo[j - 1];
@@ -56,6 +63,5 @@ int kmpBusca(char *texto, char *padrao) {
         }
     }
 
-    // Padrão não encontrado
-    return -1;
+    return resultado;
 }

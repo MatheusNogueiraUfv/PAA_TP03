@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "kmp.h"
 
 int main() {
@@ -19,23 +18,31 @@ int main() {
     scanf("%s", padrao);
 
     fgets(texto, sizeof(texto), arquivo);
-    
+
     // Medição do tempo de execução
     clock_t inicio = clock();
 
-    int resultado = kmpBusca(texto, padrao);
+    ResultadoKMP resultado = kmpBusca(texto, padrao);
 
     clock_t fim = clock();
     double tempo_execucao = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
 
-
-    if (resultado != -1) {
-        printf("Padrao encontrado na posicao %d.\n", resultado);
+    if (resultado.quantidade > 0) {
+        printf("Padrao encontrado em %d posicoes:\n", resultado.quantidade);
+        for (int i = 0; i < resultado.quantidade; i++) {
+            printf("Posicao %d: %d\n", i + 1, resultado.posicoes[i]);
+        }
     } else {
         printf("Padrao nao encontrado no texto.\n");
     }
 
+    // Libere a memória alocada
+    free(resultado.posicoes);
+
     fclose(arquivo);
+
+    printf("Tempo de execucao: %f segundos\n", tempo_execucao);
 
     return 0;
 }
+
