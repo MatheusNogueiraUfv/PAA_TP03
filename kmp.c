@@ -1,67 +1,55 @@
 #include "kmp.h"
 
-void preProcessamento(char *padrao, int m, int *prefixo) {
-    int len = 0;
-    prefixo[0] = 0; // O primeiro caractere não tem prefixo
+// Função para preencher o array lps (Longest Prefix Suffix)
+void preencherLPS(char *padrao, int M, int *lps) {
+    int len = 0; // Comprimento do prefixo atualmente igual ao sufixo
 
-    for (int i = 1; i < m;) {
+    lps[0] = 0; // Caso base
+
+    int i = 1;
+    while (i < M) {
         if (padrao[i] == padrao[len]) {
             len++;
-            prefixo[i] = len;
+            lps[i] = len;
             i++;
         } else {
             if (len != 0) {
-                len = prefixo[len - 1];
+                len = lps[len - 1];
             } else {
-                prefixo[i] = 0;
+                lps[i] = 0;
                 i++;
             }
         }
     }
 }
 
-ResultadoKMP kmpBusca(char *texto, char *padrao) {
-    int n = strlen(texto);
-    int m = strlen(padrao);
+// Função principal para realizar a busca KMP
+void buscarKMP(char *texto, char *padrao) {
+    int M = strlen(padrao);
+    int N = strlen(texto);
 
-    ResultadoKMP resultado;
-    resultado.posicoes = NULL;
-    resultado.quantidade = 0;
-
-    // Caso padrão ou texto sejam vazios, não há correspondência
-    if (n == 0 || m == 0) {
-        return resultado;
-    }
-
-    // Criando o array para armazenar os valores de prefixo
-    int prefixo[m];
-    preProcessamento(padrao, m, prefixo);
+    // Criar e preencher o array LPS
+    int lps[M];
+    preencherLPS(padrao, M, lps);
 
     int i = 0; // Índice para o texto
     int j = 0; // Índice para o padrão
 
-    while (i < n) {
+    while (i < N) {
         if (padrao[j] == texto[i]) {
             j++;
             i++;
         }
 
-        if (j == m) {
-            // Padrão encontrado, armazena a posição inicial
-            resultado.quantidade++;
-            resultado.posicoes = (int *)realloc(resultado.posicoes, resultado.quantidade * sizeof(int));
-            resultado.posicoes[resultado.quantidade - 1] = i - j;
-
-            // Continue a busca para encontrar todas as ocorrências
-            j = prefixo[j - 1];
-        } else if (i < n && padrao[j] != texto[i]) {
+        if (j == M) {
+            printf("Padrao encontrado na posicao %d\n", i - j);
+            j = lps[j - 1];
+        } else if (i < N && padrao[j] != texto[i]) {
             if (j != 0) {
-                j = prefixo[j - 1];
+                j = lps[j - 1];
             } else {
                 i++;
             }
         }
     }
-
-    return resultado;
 }

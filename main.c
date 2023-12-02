@@ -1,48 +1,43 @@
 #include "kmp.h"
 
 int main() {
-    FILE *arquivo;
-    char nomeArquivo[100], padrao[100], texto[1000];
+    char nomeArquivo[100];
+    char padrao[100];
 
-    printf("Digite o nome do arquivo (com extensao .txt): ");
+    // Solicitar o nome do arquivo e padrão ao usuário
+    printf("Digite o nome do arquivo de texto: ");
     scanf("%s", nomeArquivo);
 
-    arquivo = fopen(nomeArquivo, "r");
+    printf("Digite o padrao a ser buscado: ");
+    scanf("%s", padrao);
+
+    // Abrir o arquivo
+    FILE *arquivo = fopen(nomeArquivo, "r");
 
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        perror("Erro ao abrir o arquivo");
         return 1;
     }
 
-    printf("Digite o padrao que deseja buscar: ");
-    scanf("%s", padrao);
+    // Ler o conteúdo do arquivo
+    fseek(arquivo, 0, SEEK_END);
+    long tamanho = ftell(arquivo);
+    fseek(arquivo, 0, SEEK_SET);
 
-    fgets(texto, sizeof(texto), arquivo);
+    char texto[tamanho + 1];
+    fread(texto, 1, tamanho, arquivo);
+    texto[tamanho] = '\0'; // Adicionar o terminador nulo
 
-    // Medição do tempo de execução
+    // Fechar o arquivo após a leitura
+    fclose(arquivo);
+
+    // Realizar a busca KMP e medir o tempo
     clock_t inicio = clock();
-
-    ResultadoKMP resultado = kmpBusca(texto, padrao);
-
+    buscarKMP(texto, padrao);
     clock_t fim = clock();
     double tempo_execucao = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
-
-    if (resultado.quantidade > 0) {
-        printf("Padrao encontrado em %d posicoes:\n", resultado.quantidade);
-        for (int i = 0; i < resultado.quantidade; i++) {
-            printf("Posicao %d: %d\n", i + 1, resultado.posicoes[i]);
-        }
-    } else {
-        printf("Padrao nao encontrado no texto.\n");
-    }
-
-    // Libere a memória alocada
-    free(resultado.posicoes);
-
-    fclose(arquivo);
 
     printf("Tempo de execucao: %f segundos\n", tempo_execucao);
 
     return 0;
 }
-
