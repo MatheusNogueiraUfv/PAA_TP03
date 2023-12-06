@@ -1,0 +1,3 @@
+O algoritmo KMP é um algoritmo eficiente para casamento exato de padrões.
+Ele utiliza a tabela LPS para evitar comparações desnecessárias e otimizar a busca.
+KMP é amplamente utilizado em processamento de texto, bioinformática e outras áreas.
