@@ -42,9 +42,8 @@ void Menu(){
             Descriptografar(inputFile, outputFile, chave);
         }
     }else if(resposta==2){
-        //Gerar de -26 até 26
+        //Chave até 26
         chave = rand() % 26;
-        printf("Chave aleatoria gerada: %d\n", chave);
         printf("O que deseja fazer?\n");
         printf("[1] Criptografar\n");
         printf("[2] Descriptografar\n");
@@ -54,10 +53,12 @@ void Menu(){
         }else if(resposta==2){
             Descriptografar(inputFile, outputFile, chave);
         }
+        ReiniciarLeitura(inputFile,outputFile);
         fclose(outputFile);
         outputFile = fopen(saida, "r");
-        ExibirFrequencias(outputFile);
-        EncontrarChaveGerada(inputFile,outputFile);
+        ExibirFrequencias(outputFile,inputFile);
+
+        printf("Chave aleatoria gerada: %d\n", chave);
     }else{
         printf("Opção inválida!\n");
         printf("Encerrando execução....");
@@ -76,7 +77,7 @@ void Criptografar(FILE *ArquivoEntrada, FILE *ArquivoSaida, int chave) {
         } else if (caractere >= 'a' && caractere <= 'z') {
             caractereCriptografado = (caractere + chave - 'a' + 26) % 26 + 'a';
         } else {
-            caractereCriptografado = caractere;  // Manter caracteres que não são letras
+            caractereCriptografado = caractere;
         }
         fputc(caractereCriptografado, ArquivoSaida);
         putchar(caractereCriptografado);
@@ -93,7 +94,7 @@ void Descriptografar(FILE *ArquivoEntrada, FILE *ArquivoSaida, int chave) {
         } else if (caractere >= 'a' && caractere <= 'z') {
             caractereDescriptografado = (caractere - chave - 'a' + 26) % 26 + 'a';
         } else {
-            caractereDescriptografado = caractere;  // Manter caracteres que não são letras
+            caractereDescriptografado = caractere;
         }
         fputc(caractereDescriptografado, ArquivoSaida);
         putchar(caractereDescriptografado);
@@ -102,14 +103,19 @@ void Descriptografar(FILE *ArquivoEntrada, FILE *ArquivoSaida, int chave) {
 }
 
 
-void ExibirFrequencias(FILE *ArquivoEntrada) {
-    int frequencias[26];
-    char caractere;
-    int totalCaracteres = 0;
+void ExibirFrequencias(FILE *ArquivoSaida,FILE *ArquivoEntrada) {
+    int *frequencias = (int*)malloc(26 * sizeof(int)),totalCaracteres = 0,flag = 0,frequenciasEntrada[26];
+    char caractere,caractereVetor,caractereArquivo;
+    double VetorFrequencias[26];
+
     for(int i = 0;i<26;i++){
+
         frequencias[i] = 0;
+        VetorFrequencias[i] = 0.0;
+    
     }
-    while ((caractere = fgetc(ArquivoEntrada)) != EOF) {
+
+    while ((caractere = fgetc(ArquivoSaida)) != EOF) {
         if ((caractere >= 'A' && caractere <= 'Z') || (caractere >= 'a' && caractere <= 'z')) {
             totalCaracteres+=1;
             if (caractere >= 'A' && caractere <= 'Z') {
@@ -130,34 +136,71 @@ void ExibirFrequencias(FILE *ArquivoEntrada) {
         double percentual = (frequenciaAtual / (double)totalCaracteres) * 100;
 
         printf("    %c      |      %d      |     %.2lf%%\n", caractereAtual, frequenciaAtual, percentual);
+        VetorFrequencias[i] =(double)(percentual / 100.0); 
     }
-
-    printf("\n");
+    
+    EncontrarChave(VetorFrequencias); 
 }
 
 void ReiniciarLeitura(FILE *ArquivoEntrada, FILE *ArquivoSaida){
     fseek(ArquivoSaida, 0, SEEK_SET);
     fseek(ArquivoEntrada, 0, SEEK_SET);
 }
-void EncontrarChaveGerada(FILE *ArquivoEntrada, FILE *ArquivoSaida) {
-    ReiniciarLeitura(ArquivoEntrada,ArquivoSaida);
-    char caractereOriginal, caractereCifrado;
-    int chaveAdivinhada = 0,diferenca;
 
-    while ((caractereOriginal = fgetc(ArquivoEntrada)) != EOF && (caractereCifrado = fgetc(ArquivoSaida)) != EOF) {
-        if((int)caractereOriginal>(int)caractereCifrado){
-            if(((int)caractereOriginal - (int)caractereCifrado)>diferenca){
-                diferenca = caractereOriginal - caractereCifrado;
-            }
-        }else if((int)caractereOriginal<(int)caractereCifrado){
-            if(((int)caractereCifrado - (int)caractereOriginal)>diferenca){
-                diferenca = caractereCifrado - caractereOriginal;
+int presenteVetor(int Vetor[26], int valor) {
+    for (int i = 0; i < 26; i++) {
+        if (Vetor[i] == valor) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void EncontrarChave(double VetorFrequencias[26]) {
+    double VetorPesos[] = {
+        0.1463, 0.0104, 0.0388, 0.0499, 0.1257, 0.0102, 0.0130, 0.0128, 0.0618, 0.0040,
+        0.0002, 0.0278, 0.0474, 0.0505, 0.1073, 0.0252, 0.0120, 0.0653, 0.0781, 0.0434,
+        0.0463, 0.0167, 0.0001, 0.0021, 0.0001, 0.0047
+    };
+
+    int PMax1[26], PMAX2[26], control = 0, AUXP, AUXP2 = 0, MaiorChave = 0;
+
+    for (int i = 0; i < 26; i++) {
+        //printf("[%lf] [%lf]\n", VetorPesos[i], VetorFrequencias[i]);
+        PMax1[i] = 0;
+        PMAX2[i] = 0;
+    }
+
+    while (control != 26) {
+        double flag = -1.0, flag2 = -1.0;
+
+        for (int i = 0; i < 26; i++) {
+            if (VetorFrequencias[i] > flag && presenteVetor(PMax1, i) == 1) {
+                flag = VetorFrequencias[i];
+                AUXP = i;
             }
         }
-        printf("Diferenca: %d \n",diferenca);
-        printf("CA: %d C1: %d| C2: %d\n",chaveAdivinhada, (int)caractereOriginal, (int)caractereCifrado);
-        chaveAdivinhada = diferenca;
+
+        for (int i = 0; i < 26; i++) {
+            if (VetorPesos[i] > flag2 && presenteVetor(PMAX2, i) == 1) {
+                flag2 = VetorPesos[i];
+                AUXP2 = i;
+            }
+        }
+
+        int diferenca = ('a' + AUXP) - ('a' + AUXP2);
+
+        if (diferenca < 0 && (-1 * diferenca) > MaiorChave) {
+            MaiorChave = (-1 * diferenca);
+        } else if (diferenca > MaiorChave) {
+            MaiorChave = diferenca;
+        }
+
+        PMax1[AUXP] = 1;
+        PMAX2[AUXP2] = 1;
+
+        control += 1;
     }
-    printf("Chave Adivinhada: %d\n", chaveAdivinhada);
-    ReiniciarLeitura(ArquivoEntrada,ArquivoSaida);
+
+    printf("Chave Chute: %d\n", MaiorChave == 0 ? 1 : MaiorChave);
 }
