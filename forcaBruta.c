@@ -1,5 +1,6 @@
 #include "forcaBruta.h"
 
+/*
 int forcaBruta(TEXTO *text, PADRAO *padrao)
 {
     int ocorrenciasEncontradas = 0;
@@ -7,6 +8,7 @@ int forcaBruta(TEXTO *text, PADRAO *padrao)
 
     while (ocorrencia) {
         padrao->ocorrenciasPADRAO[ocorrenciasEncontradas++] = ocorrencia - text->caracteresTEXTO;
+        printf("Padrao encontrado na posicao %ld\n", ocorrencia - text->caracteresTEXTO);
         ocorrencia = strstr(ocorrencia + 1, padrao->palavraPADRAO);
     }
 
@@ -57,4 +59,21 @@ void calcTAM_TEXTO(TEXTO *text, FILE *arq)
     }
     text->tamTEXTO = tam;
     text->caracteresTEXTO = malloc(text->tamTEXTO * sizeof(char));
+}
+*/
+
+void buscarForcaBruta(const char *texto, const char *padrao) {
+    int tamanhoTexto = strlen(texto);
+    int tamanhoPadrao = strlen(padrao);
+
+    for (int i = 0; i <= tamanhoTexto - tamanhoPadrao; ++i) {
+        int j;
+        for (j = 0; j < tamanhoPadrao; ++j) {
+            if (texto[i + j] != padrao[j])
+                break;
+        }
+        if (j == tamanhoPadrao) {
+            printf("Padrao encontrado na posicao %d\n", i);
+        }
+    }
 }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
 typedef struct{
     char *caracteresTEXTO;
     long int tamTEXTO;
@@ -18,3 +19,7 @@ int forcaBruta(TEXTO *text, PADRAO *padrao);
 TEXTO *lerTexto(const char *nomeARQ);
 
 void calcTAM_TEXTO(TEXTO *text, FILE *arq);
+
+*/
+
+void buscarForcaBruta(const char *texto, const char *padrao);
