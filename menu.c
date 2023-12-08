@@ -73,7 +73,7 @@ void menu2(const char *arqEntrada, char *padrao)
 
         // Realizar a busca força bruta e medir o tempo
         clock_t inicio = clock();
-        buscarForcaBruta(texto, padrao);
+        forcaBruta(texto, padrao);
         clock_t fim = clock();
         double tempo_execucao = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
 
