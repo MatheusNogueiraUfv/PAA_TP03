@@ -71,6 +71,8 @@ void menu2(const char *arqEntrada, char *padrao)
         // Fechar o arquivo após a leitura
         fclose(arquivo);
 
+        textoMinusculo(texto);
+
         // Realizar a busca força bruta e medir o tempo
         clock_t inicio = clock();
         forcaBruta(texto, padrao);
@@ -95,6 +97,8 @@ void menu2(const char *arqEntrada, char *padrao)
         // Fechar o arquivo após a leitura
         fclose(arquivo);
 
+        textoMinusculo(texto);
+
         // Realizar a busca KMP e medir o tempo
         clock_t inicio = clock();
         buscarKMP(texto, padrao);
@@ -107,4 +111,13 @@ void menu2(const char *arqEntrada, char *padrao)
         printf("Opcao invalida!\n");
     }
 
+}
+
+void textoMinusculo(char *texto)
+{
+    int i = 0;
+    while (texto[i]) {
+        texto[i] = tolower(texto[i]);
+        i++;
+    }
 }
