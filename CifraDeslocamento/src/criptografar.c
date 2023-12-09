@@ -67,9 +67,9 @@ void Menu(){
         fclose(outputFile);
         outputFile = fopen(saida, "r");
         if(resposta==1){
-            ExibirFrequencias(outputFile,inputFile,1);
+            ExibirFrequencias(outputFile,1);
         }else{
-            ExibirFrequencias(outputFile,inputFile,2);
+            ExibirFrequencias(outputFile,2);
         }
 
         printf("Chave aleatoria gerada: %d\n", chave);
@@ -125,7 +125,7 @@ void Descriptografar(FILE *ArquivoEntrada, FILE *ArquivoSaida, int chave) {
 
 
 
-void ExibirFrequencias(FILE *ArquivoSaida,FILE *ArquivoEntrada,int flag) {
+void ExibirFrequencias(FILE *ArquivoSaida,int flag) {
     int *frequencias = (int*)malloc(26 * sizeof(int)),totalCaracteres = 0;
     char caractere;
     double VetorFrequencias[26];

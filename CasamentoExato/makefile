@@ -1,7 +1,8 @@
 all:
 	gcc main.c kmp.h kmp.c forcaBruta.h forcaBruta.c menu.h menu.c cores.h auxiliares.h auxiliares.c
 
-Linux:
+run:
 	./a.out
-Windows:
-	./a.exe
+
+k:
+	gcc main.c kmp.h kmp.c
