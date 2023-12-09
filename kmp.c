@@ -27,6 +27,7 @@ void preencherLPS(char *padrao, int M, int *lps) {
 void buscarKMP(char *texto, char *padrao) {
     int M = strlen(padrao);
     int N = strlen(texto);
+    int contador = 0;
 
     // Criar e preencher o array LPS
     int lps[M];
@@ -42,7 +43,8 @@ void buscarKMP(char *texto, char *padrao) {
         }
 
         if (j == M) {
-            printf("Padrao encontrado na posicao %d\n", i - j);
+            printf("\n\t %sPadrao encontrado na posicao%s %d\n", MAGENTA, RESET, i - j);
+            contador++;
             j = lps[j - 1];
         } else if (i < N && padrao[j] != texto[i]) {
             if (j != 0) {
@@ -52,4 +54,6 @@ void buscarKMP(char *texto, char *padrao) {
             }
         }
     }
+
+    printf("\n\n\t %sPadrao encontrado %s%d %svezes%s", MAGENTA, GREEN, contador, MAGENTA, RESET);
 }

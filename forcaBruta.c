@@ -3,6 +3,7 @@
 void forcaBruta(const char *texto, const char *padrao) {
     int tamanhoTexto = strlen(texto);
     int tamanhoPadrao = strlen(padrao);
+    int contador = 0;
 
     for (int i = 0; i <= tamanhoTexto - tamanhoPadrao; ++i) {
         int j;
@@ -11,7 +12,10 @@ void forcaBruta(const char *texto, const char *padrao) {
                 break;
         }
         if (j == tamanhoPadrao) {
-            printf("Padrao encontrado na posicao %d\n", i);
+            printf("\n\t %sPadrao encontrado na posicao%s %d\n", CYAN, RESET, i);
+            contador++;
         }
     }
+
+    printf("\n\n\t %sPadrao encontrado %s%d %svezes%s", CYAN, GREEN, contador, CYAN, RESET);
 }

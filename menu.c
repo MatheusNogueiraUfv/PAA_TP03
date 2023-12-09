@@ -2,122 +2,132 @@
 
 void menu()
 {
-    int opcaoDesenvolvimento;
+    int opcaoDesenvolvimento, opcaoAlgoritmo,escolhaNovamente;
     char arqTexto[50], arqEntrada[70], padrao[50];
 
+    menu1();
 
-    printf("Insira qual método deseja seguir:\n");
-    printf(" 1 - Arquivo\n");
-    printf(" 2 - Interativo\n");
-    printf(" 3 - Sair");
     scanf("%d", &opcaoDesenvolvimento);
 
     while(opcaoDesenvolvimento != 3){
         switch (opcaoDesenvolvimento)
         {
-        case 1:
+            case 1:
+
+                FILE *arq = fopen("Textos/ArquivoApresentacao.txt", "r");
+                fscanf(arq, "%s", arqTexto);
+
+                snprintf(arqEntrada, sizeof(arqEntrada), "Textos/%s", arqTexto);
+                printf("\n\t %sArquivo a ser lido:%s %s", ORANGE, RESET, arqEntrada);
+
+                fscanf(arq, "%s", padrao);
+                printf("\n\t %sPadrao a ser procurado:%s %s\n",ORANGE, RESET, padrao);
+
+                fscanf(arq, "%d", &opcaoAlgoritmo);
+
+                if(opcaoAlgoritmo == 1){
+
+                    printf("\n\t%s Algoritmo de Forca Bruta escolhido:%s\n\n", CYAN, RESET);
+
+                    realizarForcaBruta(arqEntrada, padrao);
+
+                }
+                else if(opcaoAlgoritmo == 2){
+                   
+                    printf("\n\t%s Algoritmo de Knuth-Morris-Pratt escolhido:%s\n\n", MAGENTA, RESET);
+
+                    realizarKMP(arqEntrada, padrao);
+
+                }
+
+                printf("\n\t%sDeseja realizar o processo novamente?%s\n\t", RED, RESET);
+                printf("\n\t%s[1] - SIM %s||%s [2] - NAO %s\n\t ", GREEN, RESET, RED, RESET);
+
+                scanf("%d", &escolhaNovamente);
+
+                if(escolhaNovamente == 1){
+                    menu1();
+                    scanf("%d", &opcaoDesenvolvimento);
+                }else{
+                    opcaoDesenvolvimento = 3;
+                }
+                
+                break;
             
-            break;
-        
-        case 2:
-            printf("Insira o nome do arquivo que será lido (precisa estar na pasta Textos)\n");
-            scanf("%s", arqTexto);
+            case 2:
+                printf("\n\t%sInsira o nome do arquivo que será lido (precisa estar na pasta Textos):%s\n\t", GREEN, RESET);
+                scanf("%s", arqTexto);
 
-            snprintf(arqEntrada, sizeof(arqEntrada), "Textos/%s", arqTexto);
+                snprintf(arqEntrada, sizeof(arqEntrada), "Textos/%s", arqTexto);
 
-            printf("Insira o padrao que será pesquisado:\n");
-            scanf("%s", padrao);
+                printf("\n\t%sInsira o padrao que será pesquisado:%s\n\t", GREEN, RESET);
+                scanf("%s", padrao);
 
-            menu2(arqEntrada, padrao);
+                menu2(arqEntrada, padrao);
 
-            break;
+                printf("\n\t%sDeseja realizar o processo novamente?%s\n\t", RED, RESET);
+                printf("\n\t%s[1] - SIM %s||%s [2] - NAO %s\n\t ", GREEN, RESET, RED, RESET);
 
-        default:
-            break;
+                scanf("%d", &escolhaNovamente);
+
+                if(escolhaNovamente == 1){
+                    menu1();
+                    scanf("%d", &opcaoDesenvolvimento);
+                }else{
+                    opcaoDesenvolvimento = 3;
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
+
+    printf("\n\n\t%sEncerrando o programa...%s\n\n", B_RED, RESET);
 
 }
 
 void menu2(const char *arqEntrada, char *padrao)
 {
     int opcaoAlgoritmo;
-
-    FILE *arquivo = fopen(arqEntrada, "r");
-
-    if (arquivo == NULL) {
-        perror("Erro ao abrir o arquivo");
-        return;
-    }
     
-    printf("Insira qual algoritmo será utilizado:\n");
-    printf(" 1 - Forca Bruta\n");
-    printf(" 2 - KMP\n");
+    printf("\n\t%s+========================================+%s", BLUE, RESET);
+    printf("\n\t%s| Insira qual algoritmo será utilizado:  |%s", BLUE, RESET);
+    printf("\n\t%s| 1 - Forca Bruta                        |%s", BLUE, RESET);
+    printf("\n\t%s| 2 - Knuth-Morris-Pratt                 |%s", BLUE, RESET);
+    printf("\n\t%s+========================================+%s", BLUE, RESET);
+    printf("\n\n\t");
+
     scanf("%d", &opcaoAlgoritmo);
 
     if(opcaoAlgoritmo == 1){
 
-        printf("\nForca Bruta escolhido:\n\n");
+        printf("\n\t%s Algoritmo de Forca Bruta escolhido:%s\n\n", CYAN, RESET);
 
-        // Ler o conteúdo do arquivo
-        fseek(arquivo, 0, SEEK_END);
-        long tamanho = ftell(arquivo);
-        fseek(arquivo, 0, SEEK_SET);
-
-        char texto[tamanho + 1];
-        fread(texto, 1, tamanho, arquivo);
-        texto[tamanho] = '\0'; // Adicionar o terminador nulo
-
-        // Fechar o arquivo após a leitura
-        fclose(arquivo);
-
-        textoMinusculo(texto);
-
-        // Realizar a busca força bruta e medir o tempo
-        clock_t inicio = clock();
-        forcaBruta(texto, padrao);
-        clock_t fim = clock();
-        double tempo_execucao = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
-
-        printf("Tempo de execucao: %f segundos\n", tempo_execucao);
+        realizarForcaBruta(arqEntrada, padrao);
     
     }else if(opcaoAlgoritmo == 2){
 
-        printf("\n KMP escolhido:\n\n");
+        printf("\n\t%s Algoritmo de Knuth-Morris-Pratt escolhido:%s\n\n", MAGENTA, RESET);
 
-        // Ler o conteúdo do arquivo
-        fseek(arquivo, 0, SEEK_END);
-        long tamanho = ftell(arquivo);
-        fseek(arquivo, 0, SEEK_SET);
-
-        char texto[tamanho + 1];
-        fread(texto, 1, tamanho, arquivo);
-        texto[tamanho] = '\0'; // Adicionar o terminador nulo
-
-        // Fechar o arquivo após a leitura
-        fclose(arquivo);
-
-        textoMinusculo(texto);
-
-        // Realizar a busca KMP e medir o tempo
-        clock_t inicio = clock();
-        buscarKMP(texto, padrao);
-        clock_t fim = clock();
-        double tempo_execucao = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
-
-        printf("Tempo de execucao: %f segundos\n", tempo_execucao);
+        realizarKMP(arqEntrada, padrao);
     
     }else{
-        printf("Opcao invalida!\n");
+        printf("\n\t%sOpcao invalida!%s\n\t", B_WHITE, RESET);
     }
 
 }
 
-void textoMinusculo(char *texto)
+
+
+void menu1()
 {
-    int i = 0;
-    while (texto[i]) {
-        texto[i] = tolower(texto[i]);
-        i++;
-    }
+    printf("\n\t%s+========================================+%s", YELLOW, RESET);
+    printf("\n\t%s| Insira qual método deseja seguir:      |%s", YELLOW, RESET);
+    printf("\n\t%s| 1 - Arquivo                            |%s", YELLOW, RESET);
+    printf("\n\t%s| 2 - Interativo                         |%s", YELLOW, RESET);
+    printf("\n\t%s| 3 - Sair                               |%s", YELLOW, RESET);
+    printf("\n\t%s+========================================+%s", YELLOW, RESET);
+    printf("\n\n\t");
 }
