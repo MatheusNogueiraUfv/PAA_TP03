@@ -2,6 +2,6 @@
 
 Trabalho feito por:
 
-  🥑: Matheus Nogueira Moreira 4668
-  🐟: Matheus Nascimento Peixoto 4662
-  🧚‍♀️: Aymê Faustino dos Santos - 4704
+  - 🥑 [Matheus Nogueira](https://github.com/MatheusNogueiraUfv)
+  - 🐟 [Matheus Peixoto](https://github.com/MatheusPxt21)
+  - 🧚‍♀️ [Aymê Santos](https://github.com/aymesantos)
