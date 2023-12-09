@@ -8,16 +8,19 @@ void Menu(){
     FILE *inputFile;
     FILE *outputFile;
     int chave,resposta;
-    const char entrada[30],saida[30];
+    char entrada[30],saida[30];
     printf("Digite o arquivo de entrada: \n");
-    scanf("%s",&entrada);
+    scanf("%s", entrada);
 
     getchar();
 
     printf("Digite o arquivo de saida: \n");
-    scanf("%s",&saida);
+    scanf("%s", saida);
 
     getchar();
+    
+    inputFile = fopen(entrada, "r");
+    outputFile = fopen(saida, "w");
     
     if(inputFile==NULL){
         printf("O arquivo de entrada nao foi encontrado.\n");
@@ -31,8 +34,7 @@ void Menu(){
     printf("[2] Usar chave aleatoria\n");
     scanf("%d",&resposta);
 
-    inputFile = fopen(entrada, "r");
-    outputFile = fopen(saida, "w");
+    
 
     if(resposta==1){
         printf("Entre com uma chave: \n");
