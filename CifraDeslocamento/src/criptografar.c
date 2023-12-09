@@ -18,6 +18,14 @@ void Menu(){
     scanf("%s",&saida);
 
     getchar();
+    
+    if(inputFile==NULL){
+        printf("O arquivo de entrada nao foi encontrada.\n");
+        exit(1);
+    }else if(outputFile==NULL){
+        printf("O arquivo de saida nao foi encontrada.\n");
+        exit(1);
+    }
 
     printf("[1] Digitar uma propria chave\n");
     printf("[2] Usar chave aleatoria\n");
@@ -160,63 +168,6 @@ void ReiniciarLeitura(FILE *ArquivoEntrada, FILE *ArquivoSaida){
     fseek(ArquivoEntrada, 0, SEEK_SET);
 }
 
-int presenteVetor(int Vetor[26], int valor) {
-    for (int i = 0; i < 26; i++) {
-        if (Vetor[i] == valor) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-/*void EncontrarChave(double VetorFrequencias[26]) {
-    double VetorPesos[] = {
-        0.1463, 0.0104, 0.0388, 0.0499, 0.1257, 0.0102, 0.0130, 0.0128, 0.0618, 0.0040,
-        0.0002, 0.0278, 0.0474, 0.0505, 0.1073, 0.0252, 0.0120, 0.0653, 0.0781, 0.0434,
-        0.0463, 0.0167, 0.0001, 0.0021, 0.0001, 0.0047
-    };
-
-    int PMax1[26], PMAX2[26], control = 0, AUXP, AUXP2 = 0, MaiorChave = 0,diferenca;
-
-    for (int i = 0; i < 26; i++) {
-        PMax1[i] = 0;
-        PMAX2[i] = 0;
-    }
-
-    while (control != 26) {
-        double flag = -1.0, flag2 = -1.0;
-
-        for (int i = 0; i < 26; i++) {
-            if (VetorFrequencias[i] > flag && presenteVetor(PMax1, i) == 1) {
-                flag = VetorFrequencias[i];
-                PMax1[control] = i;
-                AUXP = i;
-            }
-        }
-
-        for (int i = 0; i < 26; i++) {
-            if (VetorPesos[i] > flag2 && presenteVetor(PMAX2, i) == 1) {
-                flag2 = VetorPesos[i];
-                PMAX2[control] = i;
-                AUXP2 = i;
-            }
-        }
-
-        diferenca = ('a' + AUXP) - ('a' + AUXP2);
-        printf("[%d][%d]Diferenca: %d\n",AUXP,AUXP2,diferenca);
-
-        if (diferenca < 0 && (-1 * diferenca) > MaiorChave) {
-            MaiorChave = (-1 * diferenca);
-        } else if (diferenca > MaiorChave) {
-            MaiorChave = diferenca;
-        }
-
-
-        control += 1;
-    }
-
-    printf("Chave Chute: %d\n", MaiorChave == 0 ? 1 : MaiorChave);
-}*/
 int compararFrequencias(const void *a, const void *b) {
     double frequenciaA = ((LetraFrequencia *)a)->frequencia;
     double frequenciaB = ((LetraFrequencia *)b)->frequencia;
@@ -247,7 +198,7 @@ void EncontrarChaveAleatoria(double VetorFrequencias[26]){
     qsort(AUX02, 26, sizeof(LetraFrequencia), compararFrequencias);
     
     for(int i = 0; i < 26; i++){
-        int diferenca = abs(AUX01[i].caractere - AUX02[i].caractere);
+        int diferenca = abs(AUX02[i].caractere - AUX01[i].caractere);
         if(MaiorChave < diferenca){
             MaiorChave = diferenca;
         }
