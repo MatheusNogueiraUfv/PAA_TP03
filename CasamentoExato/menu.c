@@ -4,6 +4,7 @@ void menu()
 {
     int opcaoDesenvolvimento, opcaoAlgoritmo,escolhaNovamente;
     char arqTexto[50], arqEntrada[70], padrao[50];
+    FILE *arq;
 
     menu1();
 
@@ -14,7 +15,7 @@ void menu()
         {
             case 1:
 
-                FILE *arq = fopen("Textos/ArquivoApresentacao.txt", "r");
+                arq = fopen("Textos/ArquivoApresentacao.txt", "r");
                 fscanf(arq, "%s", arqTexto);
 
                 snprintf(arqEntrada, sizeof(arqEntrada), "Textos/%s", arqTexto);
