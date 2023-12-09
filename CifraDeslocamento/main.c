@@ -1,4 +1,4 @@
-#include "Headers/criptografar.h"
+#include "Headers/criptografar.h" 
 int main(){
     srand(time(NULL));
     Menu();

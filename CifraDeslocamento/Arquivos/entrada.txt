@@ -1,11 +1,11 @@
-Third Practical Work in the discipline of algorithm design and analysis.
-The vibrant colors of the sunset painted the sky in hues of orange and pink.
-Exploring the quaint streets of the old town, I stumbled upon a charming little bookstore.
-The soothing melody of the piano filled the room, creating an atmosphere of tranquility.
-As the waves crashed against the shore, I felt the sand beneath my feet and the cool ocean breeze on my face.
-In the heart of the bustling city, a hidden garden offered a peaceful retreat from the urban chaos.
-The aroma of freshly brewed coffee wafted through the air, enticing everyone in the cafÔö£┬«.      
-Lost in the pages of a captivating novel, time seemed to stand still for a moment.   
-A trail of fairy lights adorned the trees, creating a magical ambiance in the garden.
-On a lazy Sunday afternoon, I enjoyed a picnic in the park with friends, savoring delicious treats.
-The city skyline glittered with lights as night fell, casting a beautiful reflection on the river.
+Terceiro Trabalho Pratico na disciplina de concepcao e analise de algoritmos.
+As cores vibrantes do por do sol pintaram o ceu em tons de laranja e rosa.
+Explorando as ruas pitorescas da cidade velha, me deparei com uma pequena livraria charmosa.
+A melodia suave do piano encheu a sala, criando uma atmosfera de tranquilidade.
+A medida que as ondas batiam na costa, senti a areia sob meus pes e a brisa fresca do oceano em meu rosto.
+No coracao da movimentada cidade, um jardim escondido oferecia um retiro tranquilo do caos urbano.
+O aroma do cafe acabado de fazer flutuava no ar, atraindo todos no cafe.
+Perdido nas paginas de um romance cativante, o tempo pareceu parar por um momento.
+Um rastro de luzes decorativas adornava as arvores, criando um ambiente magico no jardim.
+Numa preguicosa tarde de domingo, fiz um piquenique no parque com os amigos, saboreando guloseimas deliciosas.
+O horizonte da cidade brilhava com luzes ao cair da noite, lancando um belo reflexo no rio.
