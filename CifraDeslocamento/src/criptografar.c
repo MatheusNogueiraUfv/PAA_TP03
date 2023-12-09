@@ -160,7 +160,6 @@ void ExibirFrequencias(FILE *ArquivoSaida,int flag) {
         printf("    %c      |      %d      |     %.2lf%%\n", caractereAtual, frequenciaAtual, percentual);
         VetorFrequencias[i] =(double)(percentual / 100.0); 
     }
-    LetraFrequencia *ptr;
     EncontrarChaveAleatoria(VetorFrequencias,flag); 
 }
 
