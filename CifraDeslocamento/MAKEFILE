@@ -1,4 +1,4 @@
-all:
+all: 
 	gcc main.c Headers/criptografar.h src/criptografar.c
 Linux:
 	./a.out
