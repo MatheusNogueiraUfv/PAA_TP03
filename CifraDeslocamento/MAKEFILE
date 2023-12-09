@@ -1,6 +1,6 @@
 all: 
 	gcc main.c Headers/criptografar.h src/criptografar.c
-Linux:
+Linux: 
 	./a.out
 Windows:
 	./a.exe
