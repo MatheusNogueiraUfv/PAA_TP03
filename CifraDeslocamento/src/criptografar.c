@@ -1,14 +1,11 @@
 #include "../Headers/criptografar.h"
 
-//A cifra de deslocamento é o processo em que  cada letra no texto é deslocada por um 
-//número fixo de posições para a direita no alfabeto,caso o número for negativo o deslocamento é 
-//feito para a esquerda.
-
 void Menu(){
     FILE *inputFile;
     FILE *outputFile;
     int chave,resposta;
     const char entrada[30],saida[30];
+
     printf("Digite o arquivo de entrada: \n");
     scanf("%s",&entrada);
 
@@ -20,10 +17,10 @@ void Menu(){
     getchar();
     
     if(inputFile==NULL){
-        printf("O arquivo de entrada nao foi encontrado.\n");
+        printf("O arquivo de entrada nao foi encontrada.\n");
         exit(1);
     }else if(outputFile==NULL){
-        printf("O arquivo de saida nao foi encontrado.\n");
+        printf("O arquivo de saida nao foi encontrada.\n");
         exit(1);
     }
 
@@ -52,7 +49,7 @@ void Menu(){
             exit(1);
         }
     }else if(resposta==2){
-        chave = rand() % 26;
+        chave = rand() % 26 + 1;
         printf("O que deseja fazer?\n");
         printf("[1] Criptografar\n");
         printf("[2] Descriptografar\n");
@@ -69,7 +66,11 @@ void Menu(){
         ReiniciarLeitura(inputFile,outputFile);
         fclose(outputFile);
         outputFile = fopen(saida, "r");
-        ExibirFrequencias(outputFile,inputFile);
+        if(resposta==1){
+            ExibirFrequencias(outputFile,inputFile,1);
+        }else{
+            ExibirFrequencias(outputFile,inputFile,2);
+        }
 
         printf("Chave aleatoria gerada: %d\n", chave);
     }else{
@@ -124,9 +125,9 @@ void Descriptografar(FILE *ArquivoEntrada, FILE *ArquivoSaida, int chave) {
 
 
 
-void ExibirFrequencias(FILE *ArquivoSaida,FILE *ArquivoEntrada) {
-    int *frequencias = (int*)malloc(26 * sizeof(int)),totalCaracteres = 0,flag = 0,frequenciasEntrada[26];
-    char caractere,caractereVetor,caractereArquivo;
+void ExibirFrequencias(FILE *ArquivoSaida,FILE *ArquivoEntrada,int flag) {
+    int *frequencias = (int*)malloc(26 * sizeof(int)),totalCaracteres = 0;
+    char caractere;
     double VetorFrequencias[26];
 
     for(int i = 0;i<26;i++){
@@ -160,7 +161,7 @@ void ExibirFrequencias(FILE *ArquivoSaida,FILE *ArquivoEntrada) {
         VetorFrequencias[i] =(double)(percentual / 100.0); 
     }
     LetraFrequencia *ptr;
-    EncontrarChaveAleatoria(VetorFrequencias); 
+    EncontrarChaveAleatoria(VetorFrequencias,flag); 
 }
 
 void ReiniciarLeitura(FILE *ArquivoEntrada, FILE *ArquivoSaida){
@@ -178,7 +179,7 @@ int compararFrequencias(const void *a, const void *b) {
 }
 
 
-void EncontrarChaveAleatoria(double VetorFrequencias[26]){
+void EncontrarChaveAleatoria(double VetorFrequencias[26],int flag){
     int MaiorChave = 0;
     double VetorPesos[] = {
         0.1463, 0.0104, 0.0388, 0.0499, 0.1257, 0.0102, 0.0130, 0.0128, 0.0618, 0.0040,
@@ -196,12 +197,19 @@ void EncontrarChaveAleatoria(double VetorFrequencias[26]){
 
     qsort(AUX01, 26, sizeof(LetraFrequencia), compararFrequencias);
     qsort(AUX02, 26, sizeof(LetraFrequencia), compararFrequencias);
-    
-    for(int i = 0; i < 26; i++){
-        int diferenca = abs(AUX02[i].caractere - AUX01[i].caractere);
-        if(MaiorChave < diferenca){
-            MaiorChave = diferenca;
-        }
+
+    if(flag == 1){
+            MaiorChave = AUX02[25].caractere - AUX01[25].caractere;
+    }else if(flag == 2){
+            while(AUX02[25].caractere!=AUX01[25].caractere){
+                MaiorChave +=1;
+                AUX02[25].caractere+=1;
+                if(AUX02[25].caractere>'z'){
+                    AUX02[25].caractere = 'a';
+                }
+            }
+    }else{
+            MaiorChave = 26;
     }
     printf("Chave Chute: %d\n", MaiorChave);
 }
