@@ -20,10 +20,10 @@ void Menu(){
     getchar();
     
     if(inputFile==NULL){
-        printf("O arquivo de entrada nao foi encontrada.\n");
+        printf("O arquivo de entrada nao foi encontrado.\n");
         exit(1);
     }else if(outputFile==NULL){
-        printf("O arquivo de saida nao foi encontrada.\n");
+        printf("O arquivo de saida nao foi encontrado.\n");
         exit(1);
     }
 
