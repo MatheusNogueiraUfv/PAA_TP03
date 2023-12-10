@@ -22,6 +22,7 @@ void menu()
                 printf("\n\t %sArquivo a ser lido:%s %s", ORANGE, RESET, arqEntrada);
 
                 fscanf(arq, "%s", padrao);
+                textoMinusculo(padrao);
                 printf("\n\t %sPadrao a ser procurado:%s %s\n",ORANGE, RESET, padrao);
 
                 fscanf(arq, "%d", &opcaoAlgoritmo);
@@ -63,6 +64,8 @@ void menu()
 
                 printf("\n\t%sInsira o padrao que será pesquisado:%s\n\t", GREEN, RESET);
                 scanf("%s", padrao);
+                
+                textoMinusculo(padrao);
 
                 menu2(arqEntrada, padrao);
 
@@ -119,8 +122,6 @@ void menu2(const char *arqEntrada, char *padrao)
     }
 
 }
-
-
 
 void menu1()
 {

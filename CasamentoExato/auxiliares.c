@@ -19,7 +19,6 @@ void realizarForcaBruta(const char *arqEntrada, char *padrao) {
     fread(texto, 1, tamanho, arquivo);
     texto[tamanho] = '\0'; // Adicionar o terminador nulo
 
-    // Fechar o arquivo após a leitura
     fclose(arquivo);
 
     textoMinusculo(texto);
@@ -51,7 +50,6 @@ void realizarKMP(const char *arqEntrada, char *padrao) {
     fread(texto, 1, tamanho, arquivo);
     texto[tamanho] = '\0'; // Adicionar o terminador nulo
 
-    // Fechar o arquivo após a leitura
     fclose(arquivo);
 
     textoMinusculo(texto);
